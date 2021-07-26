@@ -11,14 +11,33 @@ export default class SearchContainer extends React.Component {
         loading: true,
     };
 
-    handleSubmit = () => {
+    componentDidMount() {
+        this.setState({
+            loading: false,
+        });
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
         const { searchTerm } = this.state;
         if (searchTerm !== '') {
             this.searchByTerm();
         }
     };
 
+    updateTerm = (e) => {
+        const {
+            target: { value },
+        } = e;
+        this.setState({
+            searchTerm: value,
+        });
+    };
+
     searchByTerm = async () => {
+        this.setState({
+            loading: true,
+        });
         const { searchTerm } = this.state;
         try {
             const {
@@ -27,12 +46,14 @@ export default class SearchContainer extends React.Component {
             const {
                 data: { results: tvResults },
             } = await tvApi.search(searchTerm);
+
             this.setState({
                 loading: true,
                 movieResults,
                 tvResults,
             });
         } catch (e) {
+            console.log('error');
             this.setState({
                 error: "Can't find result",
             });
@@ -53,6 +74,7 @@ export default class SearchContainer extends React.Component {
                 loading={loading}
                 error={error}
                 handleSubmit={this.handleSubmit}
+                updateTerm={this.updateTerm}
             />
         );
     }

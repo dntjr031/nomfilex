@@ -23,7 +23,7 @@ export default class DetailContainer extends React.Component {
             },
             history: { push },
         } = this.props;
-        const { isMovie } = this;
+        const { isMovie } = this.state;
         const parsedId = parseInt(id);
         if (isNaN(parsedId)) {
             return push('/');
