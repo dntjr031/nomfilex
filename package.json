@@ -42,7 +42,7 @@
             "last 1 safari version"
         ]
     },
-    "homepage":"https://dntjr031.github.io/nomflix",
+    "homepage":"https://compassionate-minsky-d3513f.netlify.app",
     "devDependencies": {
         "prettier": "^2.3.2",
         "prop-types": "^15.7.2"
