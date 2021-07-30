@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Loader from '../../Components/Loader';
 import Message from '../../Components/Message';
+import { Helmet } from 'react-helmet';
 
 const imagePath = 'https://image.tmdb.org/t/p/original';
 
@@ -73,9 +74,17 @@ const Overview = styled.p`
 
 const DetailPresenter = ({ result, loading, error }) =>
     loading ? (
-        <Loader />
+        <>
+            <Helmet>
+                <title>Loading | Nomflix</title>
+            </Helmet>
+            <Loader />
+        </>
     ) : (
         <>
+            <Helmet>
+                <title>{result?.original_title || result?.original_name || ''} | Netflix</title>
+            </Helmet>
             {result && (
                 <Container>
                     <Backdrop
