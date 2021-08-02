@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Loader from '../../Components/Loader';
-import Message from '../../Components/Message';
+import Loader from './Loader';
 import { Helmet } from 'react-helmet';
-
-const imagePath = 'https://image.tmdb.org/t/p/original';
+import styled from 'styled-components';
+import DetailTab from './DetailTab';
+import Message from './Message';
 
 const Container = styled.div`
     height: calc(100vh - 50px);
@@ -48,11 +47,22 @@ const Cover = styled.div`
 
 const Data = styled.div`
     width: 70%;
-    margin-left: 10px;
+    margin-left: 40px;
 `;
 
 const Title = styled.h3`
     font-size: 32px;
+`;
+
+const ImdbLink = styled.a`
+    &:hover {
+        border-bottom: 1px solid white;
+    }
+    &::after {
+        font-size: 25px;
+        padding-left: 5px;
+        content: '🔗';
+    }
 `;
 
 const ItemContainer = styled.div`
@@ -72,7 +82,9 @@ const Overview = styled.p`
     width: 50%;
 `;
 
-const DetailPresenter = ({ result, loading, error }) =>
+const imagePath = 'https://image.tmdb.org/t/p/original';
+
+const Detail = ({ loading, result, error, isMovie }) =>
     loading ? (
         <>
             <Helmet>
@@ -91,7 +103,7 @@ const DetailPresenter = ({ result, loading, error }) =>
                         bgImage={
                             result && result['backdrop_path']
                                 ? `${imagePath}${result['backdrop_path']}`
-                                : require('../../assets/images/noPosterSmall.png').default
+                                : require('../assets/images/noPosterSmall.png').default
                         }
                     />
                     <Content>
@@ -99,14 +111,20 @@ const DetailPresenter = ({ result, loading, error }) =>
                             bgImage={
                                 result && result['backdrop_path']
                                     ? `${imagePath}${result['poster_path']}`
-                                    : require('../../assets/images/noPosterSmall.png').default
+                                    : require('../assets/images/noPosterSmall.png').default
                             }
                         />
                         <Data>
                             <Title>
-                                {result.original_title
-                                    ? result.original_title
-                                    : result.original_name}
+                                <ImdbLink
+                                    href={`https://www.imdb.com/title/${result.imdb_id}`}
+                                    rel="noreferrer"
+                                    title="Go to IMDB"
+                                    target="_blank">
+                                    {result.original_title
+                                        ? result.original_title
+                                        : result.original_name}
+                                </ImdbLink>
                             </Title>
                             <ItemContainer>
                                 <Item>
@@ -130,6 +148,7 @@ const DetailPresenter = ({ result, loading, error }) =>
                                 </Item>
                             </ItemContainer>
                             <Overview>{result.overview}</Overview>
+                            <DetailTab result={result} isMovie={isMovie} />
                         </Data>
                     </Content>
                 </Container>
@@ -137,10 +156,11 @@ const DetailPresenter = ({ result, loading, error }) =>
             {error && <Message color="#95a5a6" text={error} />}
         </>
     );
-DetailPresenter.propTypes = {
+
+Detail.propTypes = {
     result: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     error: PropTypes.string,
 };
 
-export default DetailPresenter;
+export default Detail;
