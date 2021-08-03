@@ -3,24 +3,27 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    width: 100vw;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 const Text = styled.span`
-    color: ${(props) => props.color};
+  color: ${(props) => props.color};
+  font-size: ${(props) => props?.size || 12}px;
 `;
 
-const Message = ({ text, color }) => (
-    <Container>
-        <Text color={color}>{text}</Text>
-    </Container>
+const Message = ({ text, color, size }) => (
+  <Container>
+    <Text color={color} size={size}>
+      {text}
+    </Text>
+  </Container>
 );
 
 Message.propTypes = {
-    text: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default Message;
